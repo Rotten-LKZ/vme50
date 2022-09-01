@@ -7,6 +7,14 @@ interface Options {
   resultType?: 'text' | 'image'
 }
 
+interface OptionsReturnUndefinedTrue extends Options {
+  returnUndefined?: true
+}
+
+interface OptionsReturnUndefinedFalse extends Options {
+  returnUndefined?: false
+}
+
 const defualtOptions: Options = {
   console: false,
   type: 'error',
@@ -15,7 +23,8 @@ const defualtOptions: Options = {
 }
 
 interface Vme50 {
-  (options?: Options): string | undefined
+  (options?: OptionsReturnUndefinedTrue): string | undefined
+  (options?: OptionsReturnUndefinedFalse): string
   image: () => string
   text: () => string
 }
@@ -41,10 +50,9 @@ export function vme50Image() {
   return data.images[ran(data.images.length - 1)]
 }
 
-/**
- * V我50
- */
-const vme50: Vme50 = function(options: Options = defualtOptions): string | undefined {
+function vme50Fun(options: OptionsReturnUndefinedTrue): string | undefined
+function vme50Fun(options: OptionsReturnUndefinedFalse): string
+function vme50Fun(options: Options = defualtOptions): string | undefined {
   for (const key in options) {
     // @ts-ignore
     options[key] = options[key] ?? defualtOptions[key]
@@ -66,7 +74,12 @@ const vme50: Vme50 = function(options: Options = defualtOptions): string | undef
   if (options.returnUndefined && !isThursday) return undefined
   if (options.resultType === 'text') return vme50Text()
   if (options.resultType === 'image') return vme50Image()
-} as unknown as Vme50
+}
+
+/**
+ * V我50
+ */
+const vme50: Vme50 = vme50Fun as unknown as Vme50
 
 vme50.text = vme50Text
 vme50.image = vme50Image
