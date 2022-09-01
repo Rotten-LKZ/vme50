@@ -16,6 +16,12 @@
 
 *打包的时候有带 `.d.ts` 文件，理论上支持 `TypeScript` 这里就只展示 `TypeScript` 代码示例*
 
+### 安装
+
+```bash
+npm install vme50
+```
+
 ### vme50
 
 ```typescript
